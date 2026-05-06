@@ -1,3 +1,4 @@
+import base64
 from pathlib import Path
 
 from pydantic import Field
@@ -42,6 +43,15 @@ class Settings(BaseSettings):
         env_ignore_empty=True,
         extra="forbid",
     )
+
+    def model_post_init(self, __context: object) -> None:
+        # Decode Base64 PEM keys passed in via environment variables
+        if self.jwt_public_key and self.jwt_public_key != "DEFAULT_PUBLIC_KEY":
+            try:
+                decoded = base64.b64decode(self.jwt_public_key).decode("utf-8")
+                object.__setattr__(self, "jwt_public_key", decoded)
+            except Exception as e:
+                raise ValueError(f"Failed to decode base64 jwt_public_key: {e}")
 
 
 settings = Settings()  # type: ignore[call-arg]

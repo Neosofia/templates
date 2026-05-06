@@ -1,4 +1,5 @@
 import pytest
+import base64
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 import os
@@ -18,7 +19,7 @@ _PUBLIC_PEM = _PUBLIC_KEY.public_bytes(
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
 
-os.environ["JWT_PUBLIC_KEY"] = _PUBLIC_PEM.decode()
+os.environ["JWT_PUBLIC_KEY"] = base64.b64encode(_PUBLIC_PEM).decode('utf-8')
 os.environ["JWT_ISSUER"] = "https://test.neosofia.com"
 os.environ["JWT_AUDIENCE"] = "api.test.neosofia.com"
 

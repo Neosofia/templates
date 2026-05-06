@@ -14,7 +14,8 @@ ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get install -y --no-install-recommends git \
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends git \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir uv
@@ -41,6 +42,9 @@ ENV PATH="/app/.venv/bin:$PATH" \
 RUN python -m pytest -q --ignore=tests/integration
 
 FROM ${PYTHON_IMAGE} AS runtime
+
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system app \
     && useradd --system --gid app --create-home --home-dir /home/app app
