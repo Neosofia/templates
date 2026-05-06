@@ -1,4 +1,4 @@
-from config import settings
+from core.config import settings
 
 
 bind = f"0.0.0.0:{settings.port}"

@@ -1,0 +1,7 @@
+{
+    "python.analysis.useNearestConfiguration": true,
+    "python.defaultInterpreterPath": "${workspaceFolder}/python/service/.venv/bin/python",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/python/service/src"
+    ]
+}
