@@ -34,8 +34,8 @@ wheels = [
 
 [[package]]
 name = "authentication-in-the-middle"
-version = "0.2.0"
-source = { git = "https://github.com/Neosofia/sdk.git?subdirectory=python%2Fauthentication-middleware#c301e866633fafce958abde119599280702dd979" }
+version = "0.3.0"
+source = { git = "https://github.com/Neosofia/sdk.git?subdirectory=python%2Fauthentication-middleware#4cd6705737ba5eabfca7dcf4d726a8e44e95a74d" }
 dependencies = [
     { name = "cryptography" },
     { name = "flask" },
@@ -44,8 +44,8 @@ dependencies = [
 
 [[package]]
 name = "authorization-in-the-middle"
-version = "0.1.0"
-source = { git = "https://github.com/Neosofia/sdk.git?subdirectory=python%2Fauthorization-middleware#c301e866633fafce958abde119599280702dd979" }
+version = "0.2.0"
+source = { git = "https://github.com/Neosofia/sdk.git?subdirectory=python%2Fauthorization-middleware#4cd6705737ba5eabfca7dcf4d726a8e44e95a74d" }
 dependencies = [
     { name = "cedarpy" },
     { name = "flask" },

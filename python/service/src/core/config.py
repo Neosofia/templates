@@ -21,7 +21,8 @@ class Settings(BaseSettings):
     authorization_policy_cache_ttl: int = Field(default=60, ge=0)
     
     # JWT authentication settings
-    jwt_public_key: str = Field(default="DEFAULT_PUBLIC_KEY")
+    jwt_public_key: str | None = Field(default=None)
+    jwt_jwks_uri: str | None = Field(default=None)
     jwt_issuer: str = Field(default="https://neosofia.com")
     jwt_audience: str = Field(default="api.neosofia.com")
 
@@ -41,7 +42,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         env_ignore_empty=True,
-        extra="forbid",
+        extra="ignore",
     )
 
     def model_post_init(self, __context: object) -> None:
@@ -51,7 +52,9 @@ class Settings(BaseSettings):
                 decoded = base64.b64decode(self.jwt_public_key).decode("utf-8")
                 object.__setattr__(self, "jwt_public_key", decoded)
             except Exception as e:
-                raise ValueError(f"Failed to decode base64 jwt_public_key: {e}")
+                # If it's already a PEM string (not base64), or we provided a JWKS URI, just continue
+                if "BEGIN PUBLIC KEY" not in self.jwt_public_key:
+                    raise ValueError(f"Failed to decode base64 jwt_public_key: {e}")
 
 
 settings = Settings()  # type: ignore[call-arg]

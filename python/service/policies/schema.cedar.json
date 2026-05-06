@@ -1,6 +1,14 @@
 {
   "demo": {
     "entityTypes": {
+      "User": {
+        "shape": {
+          "type": "Record",
+          "attributes": {
+            "roles": { "type": "Set", "element": { "type": "String" }, "required": true }
+          }
+        }
+      },
       "Patient": {
         "shape": {
           "type": "Record",
@@ -29,7 +37,7 @@
     "actions": {
       "document:read": {
         "appliesTo": {
-          "principalTypes": ["Patient", "Clinician"],
+          "principalTypes": ["User", "Patient", "Clinician"],
           "resourceTypes": ["Document"],
           "context": {
             "type": "Record",
@@ -42,7 +50,7 @@
       },
       "document:delete": {
         "appliesTo": {
-          "principalTypes": ["Clinician"],
+          "principalTypes": ["User", "Clinician"],
           "resourceTypes": ["Document"],
           "context": {
             "type": "Record",

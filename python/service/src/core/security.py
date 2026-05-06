@@ -107,6 +107,7 @@ def with_security(
         # Authenticate
         authn_decorator = with_authentication(
             public_key=settings.jwt_public_key,
+            jwks_uri=getattr(settings, "jwt_jwks_uri", None),
             issuer=settings.jwt_issuer,
             audience=settings.jwt_audience,
         )

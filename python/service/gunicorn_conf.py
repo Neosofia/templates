@@ -9,3 +9,5 @@ keepalive = settings.gunicorn_keepalive
 accesslog = "-"
 errorlog = "-"
 capture_output = True
+loglevel = settings.log_level
+logger_class = "src.gunicorn_logger.JSONLogger"
