@@ -25,7 +25,9 @@ def client():
         yield test_client
 
 
-def _get_token(rsa_keypair, claims=None):
+from typing import Optional
+
+def _get_token(rsa_keypair, claims: Optional[dict] = None):
     base_claims = {
         "iss": "https://test.neosofia.com",
         "aud": "api.test.neosofia.com",

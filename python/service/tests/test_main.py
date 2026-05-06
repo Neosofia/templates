@@ -11,7 +11,9 @@ def client():
     with app.test_client() as test_client:
         yield test_client
 
-def _secure_request(client, rsa_keypair, method: str, path: str, claims: dict = None, **kwargs):
+from typing import Optional
+
+def _secure_request(client, rsa_keypair, method: str, path: str, claims: Optional[dict] = None, **kwargs):
     if claims:
         # Default mandatory claims
         base_claims = {
