@@ -35,8 +35,7 @@ def test_patient_can_read_own_document(client, rsa_keypair):
         client, rsa_keypair, "GET", "/api/v1/documents/d1",
         claims={
             "sub": "p1",
-            "neosofia:token_type": "human",
-            "neosofia:roles": ["patient"]
+            "neosofia:principal_type": "Patient",
         }
     )
     assert response.status_code == 200
@@ -47,9 +46,9 @@ def test_clinician_can_read_summary_with_same_capability(client, rsa_keypair):
         client, rsa_keypair, "GET", "/api/v1/documents/d1/summary",
         claims={
             "sub": "c1",
-            "neosofia:token_type": "human",
-            "neosofia:roles": ["physician", "clinician"],
-            "neosofia:tenant_id": "clinic-a"
+            "neosofia:principal_type": "Clinician",
+            "neosofia:role": "physician",
+            "neosofia:clinic_id": "clinic-a"
         }
     )
     assert response.status_code == 200
@@ -60,9 +59,9 @@ def test_non_admin_clinician_delete_is_denied(client, rsa_keypair):
         client, rsa_keypair, "DELETE", "/api/v1/documents/d1",
         claims={
             "sub": "c1",
-            "neosofia:token_type": "human",
-            "neosofia:roles": ["physician", "clinician"],
-            "neosofia:tenant_id": "clinic-a"
+            "neosofia:principal_type": "Clinician",
+            "neosofia:role": "clinician",
+            "neosofia:clinic_id": "clinic-a"
         }
     )
     assert response.status_code == 403
@@ -73,9 +72,9 @@ def test_admin_clinician_delete_is_allowed(client, rsa_keypair):
         client, rsa_keypair, "DELETE", "/api/v1/documents/d1",
         claims={
             "sub": "c-admin",
-            "neosofia:token_type": "human",
-            "neosofia:roles": ["admin", "clinician"],
-            "neosofia:tenant_id": "clinic-a"
+            "neosofia:principal_type": "Clinician",
+            "neosofia:role": "admin",
+            "neosofia:clinic_id": "clinic-a"
         }
     )
     assert response.status_code == 200
@@ -94,8 +93,7 @@ def test_missing_document_returns_404(client, rsa_keypair):
         client, rsa_keypair, "GET", "/api/v1/documents/missing",
         claims={
             "sub": "p1",
-            "neosofia:token_type": "human",
-            "neosofia:roles": ["patient"]
+            "neosofia:principal_type": "Patient",
         }
     )
     assert response.status_code == 404

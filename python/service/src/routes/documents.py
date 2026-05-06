@@ -10,12 +10,12 @@ from core.security import with_security, evaluator_proxy
 docs_bp = Blueprint("documents", __name__, url_prefix="/api/v1/documents")
 
 def document_resource_uid() -> str:
-    document_id = request.view_args["document_id"]
+    document_id = request.view_args["document_id"] if request.view_args else ""
     get_document_or_404(document_id)
     return entity_uid(f"{NAMESPACE}::Document", document_id)
 
 def document_authorization_entities() -> list[dict[str, Any]]:
-    document_id = request.view_args["document_id"]
+    document_id = request.view_args["document_id"] if request.view_args else ""
     document = get_document_or_404(document_id)
     return [
         extract_jwt_principal_entity(NAMESPACE),

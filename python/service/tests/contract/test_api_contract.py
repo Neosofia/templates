@@ -32,8 +32,7 @@ def _get_token(rsa_keypair, claims=None):
         "iat": int(datetime.now(timezone.utc).timestamp()),
         "exp": int((datetime.now(timezone.utc) + timedelta(minutes=5)).timestamp()),
         "sub": "p1",
-        "neosofia:token_type": "human",
-        "neosofia:roles": ["patient"]
+        "neosofia:principal_type": "Patient"
     }
     if claims:
         base_claims.update(claims)
