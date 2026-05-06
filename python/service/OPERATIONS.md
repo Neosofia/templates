@@ -56,4 +56,14 @@ Before using this outside this monorepo, replace the local `authorization-in-the
 
 - `tests/test_main.py` exercises the service routes and runtime protections.
 - `tests/contract/` validates the OpenAPI contract and response shapes.
+- `tests/benchmark.py` stress tests concurrency, AuthN bottlenecks, and rate limiting natively.
 - `tests/integration/` is reserved for real container tests and is skipped by default.
+
+## High-Throughput Benchmarking
+
+You can profile API boundaries via `tests/benchmark.py`. This script spins up concurrent asynchronous clients to hammer the local application endpoint.
+
+When benchmarking container capacity locally via Docker:
+1. **Disable the Docker Log Driver**: Docker's default `json-file` log driver will become IO-bound at ~500 RPS as it streams massive amounts of 200 OK logs to your local hard drive. Pass `--log-driver none` to the `docker run` command to bypass this constraint for load testing.
+2. **Tune Rate Limits**: By default, `DOCUMENT_READ_RATE_LIMIT` strictly throttles to `60 per minute`. To test real server throughput, inject `-e DOCUMENT_READ_RATE_LIMIT="10000 per second"` to open the floodgates.
+3. **Set Workers**: Set `-e WEB_CONCURRENCY=X` matching CPU capacity. For example, `WEB_CONCURRENCY=16` handles 500+ sustained RPS with ~30ms latencies natively.
