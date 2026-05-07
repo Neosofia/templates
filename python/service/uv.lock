@@ -737,7 +737,7 @@ wheels = [
 
 [[package]]
 name = "service-template"
-version = "0.2.0"
+version = "0.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "authentication-in-the-middle" },
