@@ -1,0 +1,11 @@
+[
+  {
+    "name": "button",
+    "type": "registry:ui",
+    "files": [
+      "ui/button.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  }
+]

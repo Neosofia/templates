@@ -1,0 +1,15 @@
+{
+  "name": "utils",
+  "type": "registry:lib",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\"\nimport { twMerge } from \"tailwind-merge\"\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs))\n}\n\nexport function extractMarkdownTitle(matches: ({ data?: unknown } | undefined)[], defaultTitle: string): string {\n  const match = matches.find((m) => {\n    if (!m?.data) return false;\n    if (typeof m.data === 'string') return true;\n    return typeof (m.data as { content?: unknown }).content === 'string';\n  });\n  if (!match?.data) return defaultTitle;\n  const md = typeof match.data === 'string'\n    ? match.data\n    : (match.data as { content: string }).content;\n  return md.match(/^# (.*)/m)?.[1] ?? defaultTitle;\n}\n",
+      "type": "registry:lib"
+    }
+  ]
+}
