@@ -9,7 +9,7 @@ description = "Reference Python service template with service-owned Cedar policy
 requires-python = ">=3.14"
 dependencies = [
     "authentication-in-the-middle",
-    "authorization-in-the-middle",
+    "authorization-in-the-middle @ https://github.com/Neosofia/sdk/archive/refs/tags/authorization-in-the-middle-0.2.0.tar.gz#subdirectory=python/authorization-middleware",
     "flask>=3.0.0",
     "flask-limiter>=3.5.0",
     "flask-talisman>=1.1.0",
@@ -39,8 +39,7 @@ include = [
 ]
 
 [tool.uv.sources]
-authentication-in-the-middle = { git = "https://github.com/Neosofia/sdk.git", subdirectory = "python/authentication-middleware" }
-authorization-in-the-middle = { git = "https://github.com/Neosofia/sdk.git", subdirectory = "python/authorization-middleware" }
+authentication-in-the-middle = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.4.0/authentication_in_the_middle-0.4.0-py3-none-any.whl" }
 logenvelope = { url = "https://github.com/Neosofia/sdk/releases/download/logenvelope-0.2.0/logenvelope-0.2.0-py3-none-any.whl" }
 
 [dependency-groups]
