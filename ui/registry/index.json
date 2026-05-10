@@ -1,9 +1,114 @@
 [
   {
+    "name": "alert",
+    "type": "registry:ui",
+    "files": [
+      "ui/alert.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "badge",
+    "type": "registry:ui",
+    "files": [
+      "ui/badge.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "breadcrumb",
+    "type": "registry:ui",
+    "files": [
+      "ui/breadcrumb.tsx"
+    ],
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": []
+  },
+  {
     "name": "button",
     "type": "registry:ui",
     "files": [
       "ui/button.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "card",
+    "type": "registry:ui",
+    "files": [
+      "ui/card.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "field",
+    "type": "registry:ui",
+    "files": [
+      "ui/field.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "input",
+    "type": "registry:ui",
+    "files": [
+      "ui/input.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "label",
+    "type": "registry:ui",
+    "files": [
+      "ui/label.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "navigation-menu",
+    "type": "registry:ui",
+    "files": [
+      "ui/navigation-menu.tsx"
+    ],
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": []
+  },
+  {
+    "name": "separator",
+    "type": "registry:ui",
+    "files": [
+      "ui/separator.tsx"
+    ],
+    "dependencies": [],
+    "registryDependencies": []
+  },
+  {
+    "name": "sheet",
+    "type": "registry:ui",
+    "files": [
+      "ui/sheet.tsx"
+    ],
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": []
+  },
+  {
+    "name": "textarea",
+    "type": "registry:ui",
+    "files": [
+      "ui/textarea.tsx"
     ],
     "dependencies": [],
     "registryDependencies": []
