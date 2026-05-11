@@ -3,12 +3,11 @@ from pathlib import Path
 
 import pytest
 
-
-pytestmark = pytest.mark.contract
+pytestmark = pytest.mark.integration
 
 
 def test_openapi_spec_contains_core_paths():
-    root = Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[3]
     spec = json.loads((root / "openapi.json").read_text())
 
     assert spec["openapi"] == "3.0.3"
@@ -18,7 +17,7 @@ def test_openapi_spec_contains_core_paths():
 
 
 def test_openapi_spec_defines_error_schema():
-    root = Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[3]
     spec = json.loads((root / "openapi.json").read_text())
 
     error_schema = spec["components"]["schemas"]["ErrorResponse"]

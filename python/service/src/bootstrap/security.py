@@ -5,10 +5,10 @@ from authentication_in_the_middle import with_authentication
 from authorization_in_the_middle import with_authorization
 from flask import current_app, request
 
-from core.config import settings
-from core.extensions import limiter
-from core.logging_config import log_event
-from core.auth_helpers import (
+from src.bootstrap.config import settings
+from src.bootstrap.extensions import limiter
+from src.bootstrap.logging_config import log_event
+from src.bootstrap.auth_helpers import (
     principal_uid,
     request_context,
     resource_name_from_action,
@@ -63,11 +63,11 @@ def with_security(
             if inferred_namespace is None or inferred_builder is None or inferred_loader is None:
                 try:
                     if inferred_loader is None:
-                        service_mod = importlib.import_module(f"services.{model_name}_service")
+                        service_mod = importlib.import_module(f"src.services.{model_name}_service")
                         inferred_loader = getattr(service_mod, f"get_{model_name}_or_404")
                     
                     if inferred_builder is None or inferred_namespace is None:
-                        model_mod = importlib.import_module(f"models.{model_name}")
+                        model_mod = importlib.import_module(f"src.models.{model_name}")
                         if inferred_builder is None:
                             inferred_builder = getattr(model_mod, f"build_{model_name}_entity")
                         if inferred_namespace is None:

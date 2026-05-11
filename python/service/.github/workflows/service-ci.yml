@@ -15,7 +15,7 @@ on:
 jobs:
   test:
     name: Test & Coverage
-    uses: Neosofia/platform-workflows/.github/workflows/_test-python.yml@12c771d8c53ee656ad0b3fd276887916b056be9a
+    uses: Neosofia/platform-workflows/.github/workflows/_test-python.yml@main
     with:
       upload_coverage: true
       codecov_flags: service-template
@@ -24,4 +24,4 @@ jobs:
 
   scan:
     name: Vulnerability Scan
-    uses: Neosofia/platform-workflows/.github/workflows/_scan.yml@12c771d8c53ee656ad0b3fd276887916b056be9a
+    uses: Neosofia/platform-workflows/.github/workflows/_scan.yml@main

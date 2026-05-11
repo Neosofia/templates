@@ -1,79 +1,60 @@
 import os
-import pathlib
 import subprocess
 import time
-import uuid
 
 import pytest
 import requests
-
+from testcontainers.core.container import DockerContainer
 
 pytestmark = pytest.mark.integration
 
-_ROOT = pathlib.Path(__file__).resolve().parents[2]
-_IMAGE = f"service-template-test:{uuid.uuid4().hex[:8]}"
-_CONTAINER = f"service-template-{uuid.uuid4().hex[:8]}"
+IMAGE_TAG = "service-template-test:latest"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def build_container_image():
+    """Build the Docker image once per test session."""
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+    subprocess.run(
+        ["docker", "build", "--target", "runtime", "-t", IMAGE_TAG, "."],
+        cwd=repo_root,
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+    yield
 
 
 @pytest.fixture(scope="module")
-def live_server():
-    if os.environ.get("RUN_DOCKER_TESTS") != "1":
-        pytest.skip(
-            "Set RUN_DOCKER_TESTS=1 to build the runtime image and run the live container check."
-        )
+def app_container():
+    """Spin up the built image and wait for the health endpoint to respond."""
+    container = DockerContainer(IMAGE_TAG)
+    container.with_env("ENV", "test")
+    container.with_env("PORT", "7018")
+    container.with_exposed_ports(7018)
 
-    try:
-        subprocess.run(
-            [
-                "docker",
-                "build",
-                "--target",
-                "runtime",
-                "-t",
-                _IMAGE,
-                str(_ROOT),
-            ],
-            check=True,
-        )
-        subprocess.run(
-            [
-                "docker",
-                "run",
-                "-d",
-                "--rm",
-                "--name",
-                _CONTAINER,
-                "-P",
-                "-e",
-                "ENV=test",
-                _IMAGE,
-            ],
-            check=True,
-        )
+    with container as c:
+        port = c.get_exposed_port(7018)
+        host = c.get_container_host_ip()
+        url = f"http://{host}:{port}/health"
 
-        port_mapping = subprocess.check_output(
-            ["docker", "port", _CONTAINER, "8018/tcp"],
-            text=True,
-        ).strip()
-        host_port = port_mapping.rsplit(":", 1)[-1]
-
-        deadline = time.time() + 30
-        while time.time() < deadline:
+        start = time.time()
+        while time.time() - start < 30:
             try:
-                response = requests.get(f"http://localhost:{host_port}/health", timeout=3)
-                if response.status_code == 200:
-                    yield f"http://localhost:{host_port}"
-                    return
-            except requests.RequestException:
-                pass
-            time.sleep(1)
+                if requests.get(url, timeout=1).status_code == 200:
+                    break
+            except requests.exceptions.RequestException:
+                time.sleep(0.5)
+        else:
+            pytest.fail("Container did not become ready in time.")
 
-        raise RuntimeError("Timed out waiting for the container health endpoint")
-    finally:
-        subprocess.run(["docker", "rm", "-f", _CONTAINER], check=False)
+        yield f"http://{host}:{port}"
 
 
-def test_health(live_server):
-    response = requests.get(f"{live_server}/health", timeout=5)
-    assert response.status_code == 200
-    assert response.json()["status"] == "ok"
+def test_container_health(app_container):
+    """Container starts and the health endpoint returns 200."""
+    res = requests.get(f"{app_container}/health")
+    assert res.status_code == 200
+    assert res.json() == {"status": "ok"}
+
+
+

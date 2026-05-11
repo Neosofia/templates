@@ -5,14 +5,16 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from authorization_in_the_middle import CedarEvaluator, FilesystemPolicySetSource
-from core.config import settings
-from core.extensions import limiter
-from core.logging_config import log_event, setup_logging
-from routes.documents import init_docs_routes
-from routes.health import init_health_routes
+from src.bootstrap.config import settings
+from src.bootstrap.extensions import limiter
+from src.bootstrap.logging_config import log_event, setup_logging
+from src.routes import health
+from src.routes.documents import init_docs_routes
+
 
 def _http_error_name(status_code: int) -> str:
     return {400: "invalid_request", 404: "not_found", 405: "method_not_allowed", 413: "payload_too_large"}.get(status_code, "http_error")
+
 
 def create_app(config: dict[str, Any] | None = None) -> Flask:
     setup_logging(settings.service_name, settings.log_level)
@@ -31,7 +33,7 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     policy_source = FilesystemPolicySetSource(settings.authorization_policies_dir, cache_ttl=settings.authorization_policy_cache_ttl)
     evaluator = CedarEvaluator(policy_source=policy_source)
 
-    init_health_routes(app, policy_source)
+    app.register_blueprint(health.bp)
     init_docs_routes(app, evaluator)
 
     @app.errorhandler(HTTPException)
@@ -45,5 +47,6 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
 
     log_event("service.startup", env=settings.env, port=settings.port, policies_dir=str(settings.authorization_policies_dir))
     return app
+
 
 app = create_app()

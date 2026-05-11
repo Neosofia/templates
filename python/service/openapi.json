@@ -228,9 +228,7 @@
       "HealthResponse": {
         "type": "object",
         "required": [
-          "status",
-          "version",
-          "policies_dir"
+          "status"
         ],
         "additionalProperties": false,
         "properties": {
@@ -239,12 +237,6 @@
             "enum": [
               "ok"
             ]
-          },
-          "version": {
-            "type": "string"
-          },
-          "policies_dir": {
-            "type": "string"
           }
         }
       },

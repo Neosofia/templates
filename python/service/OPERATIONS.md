@@ -17,7 +17,7 @@
 3. Start the service locally:
 
    ```bash
-   PYTHONPATH=src uv run --dev -m gunicorn -c gunicorn_conf.py main:app
+   PYTHONPATH=. uv run --dev -m gunicorn -c src/gunicorn.py src.app:app
    ```
 
 4. Check health:
@@ -54,10 +54,10 @@ Before using this outside this monorepo, replace the local `authorization-in-the
 
 ## Test Matrix
 
-- `tests/test_main.py` exercises the service routes and runtime protections.
-- `tests/contract/` validates the OpenAPI contract and response shapes.
+- `tests/unit/` tests pure business logic, helpers, and pure functions without I/O or routing.
+- `tests/integration/` exercises the Flask routing, schema validation, and real un-mocked requests. Validates OpenAPI contract and response shapes.
+- `tests/integration/test_container.py` runs a real Docker container using `testcontainers` to ensure the built image responds successfully to health queries.
 - `tests/benchmark.py` stress tests concurrency, AuthN bottlenecks, and rate limiting natively.
-- `tests/integration/` is reserved for real container tests and is skipped by default.
 
 ## High-Throughput Benchmarking
 

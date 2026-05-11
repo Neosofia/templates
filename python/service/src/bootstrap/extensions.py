@@ -1,7 +1,7 @@
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from core.config import settings
+from src.bootstrap.config import settings
 
 
 limiter = Limiter(

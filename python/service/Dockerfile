@@ -37,9 +37,9 @@ COPY policies ./policies
 COPY openapi.json ./openapi.json
 
 ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONPATH="/app/src"
+    PYTHONPATH="/app"
 
-RUN python -m pytest -q --ignore=tests/integration
+RUN python -m pytest -q
 
 FROM ${PYTHON_IMAGE} AS runtime
 
@@ -55,12 +55,11 @@ COPY --from=prod-deps /app/.venv /app/.venv
 
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH="/app/src"
+    PYTHONPATH="/app"
 
 COPY src ./src
 COPY policies ./policies
 COPY openapi.json ./openapi.json
-COPY gunicorn_conf.py ./gunicorn_conf.py
 
 EXPOSE 8018
 
@@ -69,4 +68,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 
 USER app
 
-CMD ["python", "-m", "gunicorn", "-c", "gunicorn_conf.py", "main:app"]
+CMD ["/bin/sh", "-c", "python -m gunicorn -c src/gunicorn.py src.app:app"]

@@ -7,7 +7,7 @@ from authorization_in_the_middle import (
     extract_jwt_principal_entity,
     extract_jwt_principal_uid,
 )
-from models.document import NAMESPACE
+from src.models.document import NAMESPACE
 
 # Defines allowed characters for a WorkOS role slug
 SLUG_PATTERN = re.compile(r"^[a-zA-Z0-9_-]+$")

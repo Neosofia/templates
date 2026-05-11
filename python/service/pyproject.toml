@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "service-template"
-version = "0.2.1"
+version = "0.3.0"
 description = "Reference Python service template with service-owned Cedar policy."
 requires-python = ">=3.14"
 dependencies = [
@@ -32,7 +32,6 @@ include = [
     "README.md",
     "OPERATIONS.md",
     "SECURITY.md",
-    "gunicorn_conf.py",
     "openapi.json",
     "pyproject.toml",
     ".gitignore",
@@ -48,6 +47,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "jsonschema>=4.20.0",
     "requests>=2.33.0",
+    "testcontainers>=3.7.0",
     "pyjwt>=2.12.1",
     "cryptography>=48.0.0",
 ]
@@ -58,10 +58,15 @@ allow-direct-references = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--cov=src --cov-report=term-missing --cov-fail-under=80 --ignore=tests/integration"
+addopts = "--import-mode=importlib --cov=src --cov-report=term-missing --cov-fail-under=90"
 markers = [
     "unit: pure function tests with no external I/O",
-    "contract: API contract and response shape tests",
-    "integration: live container or compose-backed tests",
+    "integration: happy-path and contract adherence tests using the Flask test client",
 ]
-pythonpath = ["src"]
+pythonpath = ["."]
+
+[tool.coverage.run]
+omit = [
+    "src/gunicorn*.py",
+    "src/bootstrap/config.py",
+]
