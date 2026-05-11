@@ -4,7 +4,7 @@ from src.bootstrap.capabilities import Capabilities
 from src.bootstrap.config import settings
 from src.services.document_service import get_document_or_404
 from src.models.document import build_document_entity, NAMESPACE
-from src.bootstrap.security import with_security
+from authorization_in_the_middle.security import with_security
 
 docs_bp = Blueprint("documents", __name__, url_prefix="/api/v1/documents")
 

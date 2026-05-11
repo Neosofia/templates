@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "service-template"
-version = "0.3.0"
+version = "0.4.0"
 description = "Reference Python service template with service-owned Cedar policy."
 requires-python = ">=3.14"
 dependencies = [
     "authentication-in-the-middle",
-    "authorization-in-the-middle @ https://github.com/Neosofia/sdk/archive/refs/tags/authorization-in-the-middle-0.2.0.tar.gz#subdirectory=python/authorization-middleware",
+    "authorization-in-the-middle",
     "flask>=3.0.0",
     "flask-limiter>=3.5.0",
     "flask-talisman>=1.1.0",
@@ -38,7 +38,9 @@ include = [
 ]
 
 [tool.uv.sources]
-authentication-in-the-middle = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.4.0/authentication_in_the_middle-0.4.0-py3-none-any.whl" }
+authorization-in-the-middle = { url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.0/authorization_in_the_middle-0.3.0-py3-none-any.whl" }
+
+authentication-in-the-middle = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl" }
 logenvelope = { url = "https://github.com/Neosofia/sdk/releases/download/logenvelope-0.2.0/logenvelope-0.2.0-py3-none-any.whl" }
 
 [dependency-groups]
