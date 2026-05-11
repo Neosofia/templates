@@ -34,15 +34,15 @@ wheels = [
 
 [[package]]
 name = "authentication-in-the-middle"
-version = "0.4.0"
-source = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.4.0/authentication_in_the_middle-0.4.0-py3-none-any.whl" }
+version = "0.5.0"
+source = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl" }
 dependencies = [
     { name = "cryptography" },
     { name = "flask" },
     { name = "pyjwt" },
 ]
 wheels = [
-    { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.4.0/authentication_in_the_middle-0.4.0-py3-none-any.whl", hash = "sha256:a1758920b05415f74deb96518147ca7066d3655e8ac6e6506279fed6aca0c6ec" },
+    { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl", hash = "sha256:699c8d05c8af9a1534624391097e388882cdaaa6d4f23950bfbd254af954372a" },
 ]
 
 [package.metadata]
@@ -54,13 +54,15 @@ requires-dist = [
 
 [[package]]
 name = "authorization-in-the-middle"
-version = "0.2.0"
-source = { url = "https://github.com/Neosofia/sdk/archive/refs/tags/authorization-in-the-middle-0.2.0.tar.gz", subdirectory = "python/authorization-middleware" }
+version = "0.3.1"
+source = { url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.1/authorization_in_the_middle-0.3.1-py3-none-any.whl" }
 dependencies = [
     { name = "cedarpy" },
     { name = "flask" },
 ]
-sdist = { hash = "sha256:5523053399b274e1b1a7912d55e7fbc579126de1d64dd7d3484c53f672ea2b35" }
+wheels = [
+    { url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.1/authorization_in_the_middle-0.3.1-py3-none-any.whl", hash = "sha256:a2fe0524d21bd8b76b69f2a48804e16ce003acbb73871c3f77587f3bfa3bdd62" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -297,6 +299,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/49/85/12f0a49a7c4ffb70572b6c2ef13c90c88fd190debda93b23f026b25f9634/deprecated-1.3.1.tar.gz", hash = "sha256:b1b50e0ff0c1fddaa5708a2c6b0a6588bb09b892825ab2b214ac9ea9d92a5223", size = 2932523, upload-time = "2025-10-30T08:19:02.757Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/84/d0/205d54408c08b13550c733c4b85429e7ead111c7f0014309637425520a9a/deprecated-1.3.1-py2.py3-none-any.whl", hash = "sha256:597bfef186b6f60181535a29fbe44865ce137a5079f295b479886c82729d5f3f", size = 11298, upload-time = "2025-10-30T08:19:00.758Z" },
+]
+
+[[package]]
+name = "docker"
+version = "7.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pywin32", marker = "sys_platform == 'win32'" },
+    { name = "requests" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/91/9b/4a2ea29aeba62471211598dac5d96825bb49348fa07e906ea930394a83ce/docker-7.1.0.tar.gz", hash = "sha256:ad8c70e6e3f8926cb8a92619b832b4ea5299e2831c14284663184e200546fa6c", size = 117834, upload-time = "2024-05-23T11:13:57.216Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e3/26/57c6fb270950d476074c087527a558ccb6f4436657314bfb6cdf484114c4/docker-7.1.0-py3-none-any.whl", hash = "sha256:c96b93b7f0a746f9e77d325bcfb87422a3d8bd4f03136ae8a85b37f1898d5fc0", size = 147774, upload-time = "2024-05-23T11:13:55.01Z" },
 ]
 
 [[package]]
@@ -671,6 +687,16 @@ wheels = [
 ]
 
 [[package]]
+name = "pywin32"
+version = "311"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c9/31/097f2e132c4f16d99a22bfb777e0fd88bd8e1c634304e102f313af69ace5/pywin32-311-cp314-cp314-win32.whl", hash = "sha256:b7a2c10b93f8986666d0c803ee19b5990885872a7de910fc460f9b0c2fbf92ee", size = 8840714, upload-time = "2025-07-14T20:13:32.449Z" },
+    { url = "https://files.pythonhosted.org/packages/90/4b/07c77d8ba0e01349358082713400435347df8426208171ce297da32c313d/pywin32-311-cp314-cp314-win_amd64.whl", hash = "sha256:3aca44c046bd2ed8c90de9cb8427f581c479e594e99b5c0bb19b29c10fd6cb87", size = 9656800, upload-time = "2025-07-14T20:13:34.312Z" },
+    { url = "https://files.pythonhosted.org/packages/c0/d2/21af5c535501a7233e734b8af901574572da66fcc254cb35d0609c9080dd/pywin32-311-cp314-cp314-win_arm64.whl", hash = "sha256:a508e2d9025764a8270f93111a970e1d0fbfc33f4153b388bb649b7eec4f9b42", size = 8932540, upload-time = "2025-07-14T20:13:36.379Z" },
+]
+
+[[package]]
 name = "referencing"
 version = "0.37.0"
 source = { registry = "https://pypi.org/simple" }
@@ -737,7 +763,7 @@ wheels = [
 
 [[package]]
 name = "service-template"
-version = "0.2.1"
+version = "0.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "authentication-in-the-middle" },
@@ -761,12 +787,13 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "requests" },
+    { name = "testcontainers" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "authentication-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.4.0/authentication_in_the_middle-0.4.0-py3-none-any.whl" },
-    { name = "authorization-in-the-middle", url = "https://github.com/Neosofia/sdk/archive/refs/tags/authorization-in-the-middle-0.2.0.tar.gz", subdirectory = "python/authorization-middleware" },
+    { name = "authentication-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl" },
+    { name = "authorization-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.1/authorization_in_the_middle-0.3.1-py3-none-any.whl" },
     { name = "flask", specifier = ">=3.0.0" },
     { name = "flask-limiter", specifier = ">=3.5.0" },
     { name = "flask-talisman", specifier = ">=1.1.0" },
@@ -786,6 +813,23 @@ dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-cov", specifier = ">=5.0.0" },
     { name = "requests", specifier = ">=2.33.0" },
+    { name = "testcontainers", specifier = ">=3.7.0" },
+]
+
+[[package]]
+name = "testcontainers"
+version = "4.14.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "docker" },
+    { name = "python-dotenv" },
+    { name = "typing-extensions" },
+    { name = "urllib3" },
+    { name = "wrapt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ca/ac/a597c3a0e02b26cbed6dd07df68be1e57684766fd1c381dee9b170a99690/testcontainers-4.14.2.tar.gz", hash = "sha256:1340ccf16fe3acd9389a6c9e1d9ab21d9fe99a8afdf8165f89c3e69c1967d239", size = 166841, upload-time = "2026-03-18T05:19:16.696Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/2d/26b8b30067d94339afee62c3edc9b803a6eb9332f521ba77d8aaab5de873/testcontainers-4.14.2-py3-none-any.whl", hash = "sha256:0d0522c3cd8f8d9627cda41f7a6b51b639fa57bdc492923c045117933c668d68", size = 125712, upload-time = "2026-03-18T05:19:15.29Z" },
 ]
 
 [[package]]

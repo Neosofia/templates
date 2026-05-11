@@ -4,7 +4,7 @@
 #   docker build --target runtime -t service-template:test .
 
 # cedarpy 4.8.1 needs the glibc manylinux wheel for attribute-based policy evaluation.
-ARG PYTHON_IMAGE=python:3.14-slim@sha256:5b3879b6f3cb77e712644d50262d05a7c146b7312d784a18eff7ff5462e77033
+ARG PYTHON_IMAGE=python:3.14-slim@sha256:2409290aa375de35f6492db84c700067d5c4c2aacfaf770c155d7528fb68bcf1
 
 FROM ${PYTHON_IMAGE} AS build-base
 
@@ -14,7 +14,7 @@ ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get upgrade -y \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -37,14 +37,11 @@ COPY policies ./policies
 COPY openapi.json ./openapi.json
 
 ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONPATH="/app/src"
+    PYTHONPATH="/app"
 
-RUN python -m pytest -q --ignore=tests/integration
+RUN python -m pytest -q
 
 FROM ${PYTHON_IMAGE} AS runtime
-
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system app \
     && useradd --system --gid app --create-home --home-dir /home/app app
@@ -55,12 +52,11 @@ COPY --from=prod-deps /app/.venv /app/.venv
 
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH="/app/src"
+    PYTHONPATH="/app"
 
 COPY src ./src
 COPY policies ./policies
 COPY openapi.json ./openapi.json
-COPY gunicorn_conf.py ./gunicorn_conf.py
 
 EXPOSE 8018
 
@@ -69,4 +65,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 
 USER app
 
-CMD ["python", "-m", "gunicorn", "-c", "gunicorn_conf.py", "main:app"]
+CMD ["/bin/sh", "-c", "python -m gunicorn -c src/gunicorn.py src.app:app"]
