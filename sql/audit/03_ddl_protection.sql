@@ -65,18 +65,23 @@ DECLARE
 BEGIN
     FOR obj IN SELECT * FROM pg_event_trigger_ddl_commands()
     LOOP
+        target_table := split_part(obj.object_identity, '.', 2);
+        IF target_table = '' THEN
+            target_table := obj.object_identity;
+        END IF;
+
         -- Only act on standard tables, and heavily filter out system schemas and our own generated tables
         -- to prevent infinite recursion
         IF obj.object_type = 'table' 
            AND obj.schema_name NOT IN ('pg_catalog', 'information_schema', 'audit')
-           AND obj.object_identity NOT LIKE '%_audit'
+           AND target_table NOT LIKE '%_audit'
+           AND target_table NOT IN (
+               'alembic_version',            -- Python (Alembic)
+               'schema_migrations',          -- Ruby on Rails, Go (golang-migrate), Flyway
+               '__diesel_schema_migrations', -- Rust (Diesel)
+               'goose_db_version'            -- Go (Goose)
+           )
         THEN
-            -- pg_event_trigger_ddl_commands returns the full identity (schema.name), so we extract just the name
-            target_table := split_part(obj.object_identity, '.', 2);
-            IF target_table = '' THEN
-                target_table := obj.object_identity;
-            END IF;
-
             -- Automatically execute the tracking and view setups
             PERFORM audit.setup_tracking(obj.schema_name, target_table);
             PERFORM audit.setup_views(obj.schema_name, target_table);
@@ -85,8 +90,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- To enable zero-touch auditing:
--- CREATE EVENT TRIGGER trg_auto_enroll_audit 
--- ON ddl_command_end
--- WHEN TAG IN ('CREATE TABLE')
--- EXECUTE FUNCTION audit.auto_enroll_tables();
+-- Enable zero-touch auditing unconditionally
+CREATE EVENT TRIGGER trg_auto_enroll_audit 
+ON ddl_command_end
+WHEN TAG IN ('CREATE TABLE')
+EXECUTE FUNCTION audit.auto_enroll_tables();
