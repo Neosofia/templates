@@ -23,9 +23,9 @@ BEGIN
         
     ELSIF (TG_OP = 'UPDATE') THEN
         -- Insert the BEFORE image into the audit table
-        -- We generate a history_uuid for the audit row automatically (using time-ordered uuidv7)
+        -- We generate a history_uuid for the audit row automatically
         EXECUTE format(
-            'INSERT INTO %I.%I SELECT uuid_generate_v7(), $1.*', 
+            'INSERT INTO %I.%I SELECT uuidv7(), $1.*', 
             TG_TABLE_SCHEMA, TG_TABLE_NAME || '_audit'
         ) USING OLD;
         

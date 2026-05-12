@@ -17,7 +17,7 @@ BEGIN
     -- We use 'CREATE TABLE ... (LIKE ...)' to clone the structure, but we skip foreign keys and primary keys.
     EXECUTE format(
         'CREATE TABLE IF NOT EXISTS %I.%I (
-            history_uuid uuid PRIMARY KEY DEFAULT uuid_generate_v7(),
+            history_uuid uuid PRIMARY KEY DEFAULT uuidv7(),
             LIKE %I.%I
         )', 
         target_schema, target_table || '_audit',
