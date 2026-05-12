@@ -4,6 +4,23 @@ This directory contains the central [shadcn/ui](https://ui.shadcn.com/) componen
 
 This gives each frontend app complete local ownership of the components while ensuring the original source (and updates) come with our precise corporate styling, typography, and standard utilities pre-baked in.
 
+## Reference UI
+
+This workspace includes a small reference UI built on top of the component registry. It is intended as a live preview for the registry components and a development playground for layouts, navigation, and interaction patterns.
+
+### Start the reference UI
+
+From this directory:
+
+```bash
+pnpm install
+pnpm run dev
+```
+
+Then open the UI at:
+
+- `http://localhost:5173`
+
 ## Repository Structure
 
 - `src/components/ui/`: The React / Tailwind UI source components.
@@ -17,16 +34,16 @@ When we update or add a component here, running `npm run build` will convert the
 
 ### Using the registry in an app
 
-*(Assuming the `registry/` folder is eventually hosted via a direct static URL, e.g. `https://raw.githubusercontent.com/Neosofia/templates/main/ui/registry`)*
+*(Assuming the `registry/` folder is eventually hosted via a direct static URL, e.g. `https://raw.githubusercontent.com/Neosofia/templates/main/react/ui/registry`)*
 
 To pull a component directly into a Neosofia repository (e.g., CDP UI):
 
 ```bash
 # Add a component
-npx shadcn add "https://raw.githubusercontent.com/Neosofia/templates/main/ui/registry/ui/button.json"
+npx shadcn add "https://raw.githubusercontent.com/Neosofia/templates/main/react/ui/registry/ui/button.json"
 
 # Add our utilities 
-npx shadcn add "https://raw.githubusercontent.com/Neosofia/templates/main/ui/registry/utils.json"
+npx shadcn add "https://raw.githubusercontent.com/Neosofia/templates/main/react/ui/registry/utils.json"
 ```
 
 ## Adding a new component

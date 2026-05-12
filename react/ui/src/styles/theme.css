@@ -179,6 +179,7 @@
     &::-webkit-scrollbar { display: none; }
   }
 
+
   /* TOC sidebar: anchored just right of the centered content container.
      At xl (1280px) the container is max-w-3xl (48rem, half = 24rem).
      At 2xl (1536px) the container is max-w-5xl (64rem, half = 32rem). */
@@ -312,4 +313,10 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+
+body[data-floating-ui-scroll-lock] {
+  padding-right: 0 !important;
+  overflow: auto !important;
 }

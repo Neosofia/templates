@@ -7,3 +7,5 @@ Use these Copier templates to quickly scaffold new repositories with firm-wide s
 
 - `python/service/`: The comprehensive reference template for Python web services. Instantiates a production-ready Flask boilerplate demonstrating strict Layered Architecture, local service-owned Cedar authorization (via SDK middlewares), JWT cryptographically-signed authentication, structured logging, and Pytest coverage standards.
 
+
+- `react/ui/`: The baseline template for React frontends. Implements Vite, Tailwind CSS v4, and pre-configures a firm-wide decentralized Shadcn component registry.
