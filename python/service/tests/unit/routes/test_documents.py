@@ -14,6 +14,7 @@ def _secure_request(client, rsa_keypair, method: str, path: str, claims: Optiona
             "aud": "python-template",
             "iat": int(datetime.now(timezone.utc).timestamp()),
             "exp": int((datetime.now(timezone.utc) + timedelta(minutes=5)).timestamp()),
+            "neosofia:roles": ["user"],
         }
         base_claims.update(claims)
 

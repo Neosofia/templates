@@ -15,6 +15,7 @@ def _get_token(rsa_keypair, claims: Optional[dict] = None) -> str:
         "exp": int((datetime.now(timezone.utc) + timedelta(minutes=5)).timestamp()),
         "sub": "p1",
         "neosofia:principal_type": "Patient",
+        "neosofia:roles": ["user"],
     }
     if claims:
         base_claims.update(claims)
