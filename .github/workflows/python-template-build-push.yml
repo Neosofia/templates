@@ -14,10 +14,14 @@ jobs:
   test:
     name: Test
     uses: Neosofia/platform-workflows/.github/workflows/_test-python.yml@main
+    with:
+      working_directory: python/service
 
   scan:
     name: Vulnerability Scan
     uses: Neosofia/platform-workflows/.github/workflows/_scan.yml@main
+    with:
+      working_directory: python/service
 
   build-push:
     name: Build & Push to GHCR
@@ -25,5 +29,7 @@ jobs:
     uses: Neosofia/platform-workflows/.github/workflows/_build-push.yml@main
     with:
       image_name: ghcr.io/${{ github.repository_owner }}/python-template
+      context: python/service
+      file: python/service/Dockerfile
       tag_prefix: python-template
       cache_scope: python-template
