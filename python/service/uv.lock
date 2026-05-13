@@ -34,15 +34,15 @@ wheels = [
 
 [[package]]
 name = "authentication-in-the-middle"
-version = "0.5.0"
-source = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl" }
+version = "0.5.2"
+source = { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle/v0.5.2/authentication_in_the_middle-0.5.2-py3-none-any.whl" }
 dependencies = [
     { name = "cryptography" },
     { name = "flask" },
     { name = "pyjwt" },
 ]
 wheels = [
-    { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl", hash = "sha256:699c8d05c8af9a1534624391097e388882cdaaa6d4f23950bfbd254af954372a" },
+    { url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle/v0.5.2/authentication_in_the_middle-0.5.2-py3-none-any.whl", hash = "sha256:0d3e98c8ee82dbdb6019c03fbb6fc164c3774d36f83e62413d9588c68aa03f87" },
 ]
 
 [package.metadata]
@@ -687,6 +687,61 @@ wheels = [
 ]
 
 [[package]]
+name = "python-template"
+version = "0.4.2"
+source = { editable = "." }
+dependencies = [
+    { name = "authentication-in-the-middle" },
+    { name = "authorization-in-the-middle" },
+    { name = "flask" },
+    { name = "flask-limiter" },
+    { name = "flask-talisman" },
+    { name = "gunicorn" },
+    { name = "httpx" },
+    { name = "logenvelope" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "python-dotenv" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "cryptography" },
+    { name = "jsonschema" },
+    { name = "pyjwt" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "requests" },
+    { name = "testcontainers" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "authentication-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle/v0.5.2/authentication_in_the_middle-0.5.2-py3-none-any.whl" },
+    { name = "authorization-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.1/authorization_in_the_middle-0.3.1-py3-none-any.whl" },
+    { name = "flask", specifier = ">=3.0.0" },
+    { name = "flask-limiter", specifier = ">=3.5.0" },
+    { name = "flask-talisman", specifier = ">=1.1.0" },
+    { name = "gunicorn", specifier = ">=21.2.0" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "logenvelope", url = "https://github.com/Neosofia/sdk/releases/download/logenvelope-0.3.0/logenvelope-0.3.0-py3-none-any.whl" },
+    { name = "pydantic", specifier = ">=2.8.0,<3.0.0" },
+    { name = "pydantic-settings", specifier = ">=2.0.0,<3.0.0" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "cryptography", specifier = ">=48.0.0" },
+    { name = "jsonschema", specifier = ">=4.20.0" },
+    { name = "pyjwt", specifier = ">=2.12.1" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-cov", specifier = ">=5.0.0" },
+    { name = "requests", specifier = ">=2.33.0" },
+    { name = "testcontainers", specifier = ">=3.7.0" },
+]
+
+[[package]]
 name = "pywin32"
 version = "311"
 source = { registry = "https://pypi.org/simple" }
@@ -759,61 +814,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/85/70/92482ccffb96f5441aab93e26c4d66489eb599efdcf96fad90c14bbfb976/rpds_py-0.30.0-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:dbd936cde57abfee19ab3213cf9c26be06d60750e60a8e4dd85d1ab12c8b1f40", size = 556030, upload-time = "2025-11-30T20:24:10.956Z" },
     { url = "https://files.pythonhosted.org/packages/20/53/7c7e784abfa500a2b6b583b147ee4bb5a2b3747a9166bab52fec4b5b5e7d/rpds_py-0.30.0-cp314-cp314t-win32.whl", hash = "sha256:dc824125c72246d924f7f796b4f63c1e9dc810c7d9e2355864b3c3a73d59ade0", size = 211570, upload-time = "2025-11-30T20:24:12.735Z" },
     { url = "https://files.pythonhosted.org/packages/d0/02/fa464cdfbe6b26e0600b62c528b72d8608f5cc49f96b8d6e38c95d60c676/rpds_py-0.30.0-cp314-cp314t-win_amd64.whl", hash = "sha256:27f4b0e92de5bfbc6f86e43959e6edd1425c33b5e69aab0984a72047f2bcf1e3", size = 226532, upload-time = "2025-11-30T20:24:14.634Z" },
-]
-
-[[package]]
-name = "python-template"
-version = "0.4.1"
-source = { editable = "." }
-dependencies = [
-    { name = "authentication-in-the-middle" },
-    { name = "authorization-in-the-middle" },
-    { name = "flask" },
-    { name = "flask-limiter" },
-    { name = "flask-talisman" },
-    { name = "gunicorn" },
-    { name = "httpx" },
-    { name = "logenvelope" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "python-dotenv" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "cryptography" },
-    { name = "jsonschema" },
-    { name = "pyjwt" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "requests" },
-    { name = "testcontainers" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "authentication-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authentication-in-the-middle-0.5.0/authentication_in_the_middle-0.5.0-py3-none-any.whl" },
-    { name = "authorization-in-the-middle", url = "https://github.com/Neosofia/sdk/releases/download/authorization-in-the-middle-0.3.1/authorization_in_the_middle-0.3.1-py3-none-any.whl" },
-    { name = "flask", specifier = ">=3.0.0" },
-    { name = "flask-limiter", specifier = ">=3.5.0" },
-    { name = "flask-talisman", specifier = ">=1.1.0" },
-    { name = "gunicorn", specifier = ">=21.2.0" },
-    { name = "httpx", specifier = ">=0.27.0" },
-    { name = "logenvelope", url = "https://github.com/Neosofia/sdk/releases/download/logenvelope-0.3.0/logenvelope-0.3.0-py3-none-any.whl" },
-    { name = "pydantic", specifier = ">=2.8.0,<3.0.0" },
-    { name = "pydantic-settings", specifier = ">=2.0.0,<3.0.0" },
-    { name = "python-dotenv", specifier = ">=1.2.2" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "cryptography", specifier = ">=48.0.0" },
-    { name = "jsonschema", specifier = ">=4.20.0" },
-    { name = "pyjwt", specifier = ">=2.12.1" },
-    { name = "pytest", specifier = ">=8.0.0" },
-    { name = "pytest-cov", specifier = ">=5.0.0" },
-    { name = "requests", specifier = ">=2.33.0" },
-    { name = "testcontainers", specifier = ">=3.7.0" },
 ]
 
 [[package]]

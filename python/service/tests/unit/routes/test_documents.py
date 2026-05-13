@@ -11,7 +11,7 @@ def _secure_request(client, rsa_keypair, method: str, path: str, claims: Optiona
     if claims:
         base_claims = {
             "iss": "https://test.neosofia.com",
-            "aud": "api.test.neosofia.com",
+            "aud": "python-template",
             "iat": int(datetime.now(timezone.utc).timestamp()),
             "exp": int((datetime.now(timezone.utc) + timedelta(minutes=5)).timestamp()),
         }

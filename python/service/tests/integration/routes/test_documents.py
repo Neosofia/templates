@@ -10,7 +10,7 @@ pytestmark = pytest.mark.integration
 def _get_token(rsa_keypair, claims: Optional[dict] = None) -> str:
     base_claims = {
         "iss": "https://test.neosofia.com",
-        "aud": "api.test.neosofia.com",
+        "aud": "python-template",
         "iat": int(datetime.now(timezone.utc).timestamp()),
         "exp": int((datetime.now(timezone.utc) + timedelta(minutes=5)).timestamp()),
         "sub": "p1",
