@@ -1,0 +1,22 @@
+name: sql-template-build-push
+
+on:
+  push:
+    tags:
+      - 'sql-template/*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-push:
+    name: Build & Push to GHCR
+    uses: Neosofia/platform-workflows/.github/workflows/_build-push.yml@main
+    with:
+      image_name: ghcr.io/${{ github.repository_owner }}/sql-template
+      context: sql
+      file: sql/Dockerfile
+      tag_prefix: sql-template
+      cache_scope: sql-template
