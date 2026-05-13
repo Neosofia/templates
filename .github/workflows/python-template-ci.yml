@@ -1,0 +1,29 @@
+name: python-template-ci
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'python/service/**'
+      - '.github/workflows/template-python-service-ci.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'python/service/**'
+      - '.github/workflows/template-python-service-ci.yml'
+
+jobs:
+  test:
+    name: Test & Coverage
+    uses: Neosofia/platform-workflows/.github/workflows/_test-python.yml@main
+    with:
+      working_directory: python/service
+      upload_coverage: false
+
+  scan:
+    name: Vulnerability Scan
+    uses: Neosofia/platform-workflows/.github/workflows/_scan.yml@main
+    with:
+      working_directory: python/service
