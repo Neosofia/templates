@@ -762,7 +762,7 @@ wheels = [
 ]
 
 [[package]]
-name = "service-template"
+name = "python-template"
 version = "0.4.1"
 source = { editable = "." }
 dependencies = [

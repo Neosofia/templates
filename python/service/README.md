@@ -36,7 +36,7 @@ The machine-readable contract lives in `openapi.json`.
 
 | Variable | Type | Default | Effect |
 |---|---|---|---|
-| `SERVICE_NAME` | string | `service-template` | Service name written into structured logs. |
+| `SERVICE_NAME` | string | `python-template` | Service name written into structured logs. |
 | `ENV` | string | `production` | Controls development/test behavior such as HTTPS enforcement. |
 | `LOG_LEVEL` | string | `info` | Minimum structured log severity. |
 | `PORT` | integer | `8018` | HTTP listener port. |
@@ -68,5 +68,5 @@ The default pytest invocation enforces an 80% coverage floor and excludes integr
 In this monorepo, build the reference container from the repository root so the local `authorization-in-the-middle` source override is available during `uv sync`:
 
 ```bash
-docker build -f templates/python/service/Dockerfile -t service-template:test .
+docker build -f templates/python/service/Dockerfile -t python-template:test .
 ```

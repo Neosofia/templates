@@ -18,7 +18,7 @@ jobs:
     uses: Neosofia/platform-workflows/.github/workflows/_test-python.yml@main
     with:
       upload_coverage: true
-      codecov_flags: service-template
+      codecov_flags: python-template
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

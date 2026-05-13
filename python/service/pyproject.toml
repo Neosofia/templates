@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "service-template"
+name = "python-template"
 version = "0.4.1"
 description = "Reference Python service template with service-owned Cedar policy."
 requires-python = ">=3.14"
