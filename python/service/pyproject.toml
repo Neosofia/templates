@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "service-template"
-version = "0.4.0"
+version = "0.4.1"
 description = "Reference Python service template with service-owned Cedar policy."
 requires-python = ">=3.14"
 dependencies = [
