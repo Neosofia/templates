@@ -48,6 +48,9 @@ class Settings(BaseSettings):
     )
 
     def model_post_init(self, __context: object) -> None:
+        if not self.jwt_public_key and not self.jwt_jwks_uri:
+            raise ValueError("JWT_PUBLIC_KEY or JWT_JWKS_URI must be configured for token validation")
+
         # Decode Base64 PEM keys passed in via environment variables
         if self.jwt_public_key and self.jwt_public_key != "DEFAULT_PUBLIC_KEY":
             try:
