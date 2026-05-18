@@ -60,11 +60,12 @@ ENV PATH="/app/.venv/bin:$PATH" \
 COPY src ./src
 COPY policies ./policies
 COPY openapi.json ./openapi.json
+COPY .env.example .env
 
 EXPOSE 8018
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-    CMD python -c "import httpx; httpx.get('http://localhost:8018/health', timeout=3).raise_for_status()" || exit 1
+    CMD python -c "import os, httpx; port = os.environ.get('PORT', '8018'); httpx.get(f'http://localhost:{port}/health', timeout=3).raise_for_status()" || exit 1
 
 USER app
 
