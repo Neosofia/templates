@@ -1,7 +1,8 @@
+from typing import Any, Union
 import base64
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,6 +25,7 @@ class Settings(BaseSettings):
     jwt_public_key: str | None = Field(default=None)
     jwt_jwks_uri: str | None = Field(default=None)
     jwt_issuer: str = Field(default="https://neosofia.com")
+    jwt_audience: str | list[str] = Field(default="python-template")
 
     # Rate limit settings
     rate_limit_storage_uri: str = "memory://"
@@ -46,6 +48,14 @@ class Settings(BaseSettings):
         env_ignore_empty=True,
         extra="ignore",
     )
+
+    @field_validator("jwt_audience", mode="before")
+    def normalize_jwt_audience(cls, value: str | list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            return [entry.strip() for entry in value.split(",") if entry.strip()]
+        return [entry.strip() for entry in value if isinstance(entry, str) and entry.strip()]
 
     def model_post_init(self, __context: object) -> None:
         if not self.jwt_public_key and not self.jwt_jwks_uri:
