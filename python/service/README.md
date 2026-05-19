@@ -36,7 +36,7 @@ The machine-readable contract lives in `openapi.json`.
 
 | Variable | Type | Default | Effect |
 |---|---|---|---|
-| `SERVICE_NAME` | string | `python-template` | Service name written into structured logs. |
+| `JWT_AUDIENCE` | string | `python-template` | Audience to expect on JWT.  |
 | `ENV` | string | `production` | Controls development/test behavior such as HTTPS enforcement. |
 | `LOG_LEVEL` | string | `info` | Minimum structured log severity. |
 | `PORT` | integer | `8018` | HTTP listener port. |
