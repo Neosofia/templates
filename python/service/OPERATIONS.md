@@ -63,6 +63,7 @@ Shared JWT, JWKS, CORS, healthcheck, and PaaS networking guidance:
 - **Local JWKS:** `JWT_JWKS_URI=http://authentication:8014/.well-known/jwks.json` (adjust port to match compose).
 - **Cloud audience:** `JWT_AUDIENCE=python-template`; authentication must include `python-template` in `JWT_WEB_AUDIENCE`.
 - **Healthcheck:** forked services should exempt `/health` from Talisman HTTPS redirect (see infrastructure guide).
+- **CORS preflight cache:** OPTIONS responses include `Access-Control-Max-Age: 86400` (24 h; Chrome caps at 2 h) so browsers cache cross-origin preflights.
 
 ## Test Matrix
 
