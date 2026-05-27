@@ -52,6 +52,18 @@ docker run -d --rm -p 8018:8018 -e ENV=development --env-file .env --name python
 
 Before using this outside this monorepo, replace the local `authorization-in-the-middle` source override in `pyproject.toml` with an immutable published artifact.
 
+## Public cloud deployment
+
+Shared JWT, JWKS, CORS, healthcheck, and PaaS networking guidance:
+
+**→ [infrastructure/public-cloud/OPERATIONS.md](https://github.com/Neosofia/infrastructure/blob/main/public-cloud/OPERATIONS.md)**
+
+**Template-specific notes:**
+
+- **Local JWKS:** `JWT_JWKS_URI=http://authentication:8014/.well-known/jwks.json` (adjust port to match compose).
+- **Cloud audience:** `JWT_AUDIENCE=python-template`; authentication must include `python-template` in `JWT_WEB_AUDIENCE`.
+- **Healthcheck:** forked services should exempt `/health` from Talisman HTTPS redirect (see infrastructure guide).
+
 ## Test Matrix
 
 - `tests/unit/` tests pure business logic, helpers, and pure functions without I/O or routing.
