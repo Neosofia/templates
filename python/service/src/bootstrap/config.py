@@ -70,6 +70,15 @@ class Settings(BaseSettings):
             return [entry.strip() for entry in value.split(",") if entry.strip()]
         return [entry.strip() for entry in value if isinstance(entry, str) and entry.strip()]
 
+    @field_validator("port", "trusted_proxy_hops", mode="before")
+    @classmethod
+    def _normalize_optional_int_env(cls, value: object) -> object:
+        # Some platforms inject empty strings for optional numeric env vars.
+        # Returning None lets pydantic apply the field default.
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
+
     @field_validator("app_database_url", "migration_database_url", mode="before")
     @classmethod
     def _require_non_empty_database_url(cls, value: object, info) -> str:
