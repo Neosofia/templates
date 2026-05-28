@@ -8,25 +8,40 @@
    uv sync
    ```
 
-2. Run the test suite:
+2. Configure database URLs in `.env` (copy from `.env.example`). Use different users for migration and runtime:
+
+   ```dotenv
+   MIGRATION_DATABASE_URL=postgresql+psycopg://template:<superuser-password>@localhost:5432/python_template
+   APP_DATABASE_URL=postgresql+psycopg://app:<app-password>@localhost:5432/python_template
+   ```
+
+   Start Postgres, then apply migrations:
+
+   ```bash
+   uv run alembic upgrade head
+   ```
+
+   Requires audit SQL from `templates/sql/audit` (monorepo) or `ghcr.io/neosofia/sql-template:v0.5.0+` in production images.
+
+3. Run the test suite:
 
    ```bash
    uv run --dev -m pytest -q
    ```
 
-3. Start the service locally:
+4. Start the service locally:
 
    ```bash
    uv run --dev -m gunicorn -c src/gunicorn.py src.app:app
    ```
 
-4. Check health:
+5. Check health:
 
    ```bash
    curl http://localhost:8018/health
    ```
 
-5. Generate a local JWT to test secure API endpoints:
+6. Generate a local JWT to test secure API endpoints:
 
    You will need a valid RS256 token matching the local application's keys to access protected endpoints. Run our utility script to generate an RSA Keypair and Token automatically:
    
@@ -60,8 +75,8 @@ Shared JWT, JWKS, CORS, healthcheck, and PaaS networking guidance:
 
 **Template-specific notes:**
 
-- **Local JWKS:** `JWT_JWKS_URI=http://authentication:8014/.well-known/jwks.json` (adjust port to match compose).
-- **Cloud audience:** `JWT_AUDIENCE=python-template`; authentication must include `python-template` in `JWT_WEB_AUDIENCE`.
+- **Local JWKS:** `JWT_JWKS_URI=http://identity:8014/.well-known/jwks.json` (adjust host and port to your identity provider).
+- **Cloud audience:** `JWT_AUDIENCE=python-template`; configure your token issuer to include this audience.
 - **Healthcheck:** forked services should exempt `/health` from Talisman HTTPS redirect (see infrastructure guide).
 - **CORS preflight cache:** OPTIONS responses include `Access-Control-Max-Age: 86400` (24 h; Chrome caps at 2 h) so browsers cache cross-origin preflights.
 

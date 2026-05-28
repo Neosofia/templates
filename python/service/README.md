@@ -32,10 +32,20 @@ When you copy this template into a standalone repository, replace that local sou
 
 The machine-readable contract lives in `openapi.json`.
 
+## Database
+
+Migration `000` bootstraps PostgreSQL for a backing store: creates the restricted `app` role (password from `APP_DATABASE_URL`), grants table privileges, and applies the shared [audit SQL templates](https://github.com/Neosofia/templates/tree/main/sql/audit). Use a two-URL pattern: superuser for migrations, `app` for runtime.
+
+```bash
+uv run alembic upgrade head
+```
+
 ## Environment Variables
 
 | Variable | Type | Default | Effect |
 |---|---|---|---|
+| `MIGRATION_DATABASE_URL` | string | *(required)* | Superuser URL for Alembic migrations. |
+| `APP_DATABASE_URL` | string | *(required)* | Restricted `app` role URL for the running service. |
 | `JWT_AUDIENCE` | string | `python-template` | Audience to expect on JWT.  |
 | `ENV` | string | `production` | Controls development/test behavior such as HTTPS enforcement. |
 | `LOG_LEVEL` | string | `info` | Minimum structured log severity. |

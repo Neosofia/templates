@@ -4,7 +4,10 @@
 #   docker build --target runtime -t python-template:test .
 
 # cedarpy 4.8.1 needs the glibc manylinux wheel for attribute-based policy evaluation.
-ARG PYTHON_IMAGE=python:3.14-slim@sha256:2409290aa375de35f6492db84c700067d5c4c2aacfaf770c155d7528fb68bcf1
+ARG PYTHON_IMAGE=python:3.14-slim@sha256:c845af9399020c7e562969a13689e929074a10fd057acd1b1fad06a2fb068e97
+
+# SQL audit templates (same pattern as authentication)
+FROM ghcr.io/neosofia/sql-template:v0.5.0 AS audit-templates
 
 FROM ${PYTHON_IMAGE} AS build-base
 
@@ -31,6 +34,7 @@ RUN uv sync --frozen --all-groups --no-editable --no-install-project
 
 FROM test-deps AS test
 
+COPY alembic.ini ./alembic.ini
 COPY src ./src
 COPY tests ./tests
 COPY policies ./policies
@@ -57,10 +61,14 @@ ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH="/app"
 
+COPY alembic.ini ./alembic.ini
 COPY src ./src
 COPY policies ./policies
 COPY openapi.json ./openapi.json
 COPY .env.example .env
+
+# Audit SQL applied by Alembic migration 000
+COPY --from=audit-templates /sql/audit /app/audit-templates
 
 EXPOSE 8018
 
