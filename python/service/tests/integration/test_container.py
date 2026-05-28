@@ -57,6 +57,7 @@ def app_container():
         )
 
         container = DockerContainer(IMAGE_TAG)
+        container.with_kwargs(extra_hosts={"host.docker.internal": "host-gateway"})
         container.with_env("ENV", "test")
         container.with_env("PORT", "7018")
         container.with_env("JWT_JWKS_URI", "http://identity:8014/.well-known/jwks.json")
