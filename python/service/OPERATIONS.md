@@ -73,6 +73,8 @@ Shared JWT, JWKS, CORS, healthcheck, and PaaS networking guidance:
 
 **→ [infrastructure/public-cloud/OPERATIONS.md](https://github.com/Neosofia/infrastructure/blob/main/public-cloud/OPERATIONS.md)**
 
+For Railway IaC, start from `railway.toml` in this template directory. It provisions Postgres and runs Alembic via `preDeployCommand`.
+
 **Template-specific notes:**
 
 - **Local JWKS:** `JWT_JWKS_URI=http://identity:8014/.well-known/jwks.json` (adjust host and port to your identity provider).
