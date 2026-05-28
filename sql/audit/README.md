@@ -38,7 +38,18 @@ To summarize the complete lifecycle of a record under this audit system:
 
 ## SQL Templates
 
+Execute in numeric order during platform init migration (`000`).
+
+*   **`00_bootstrap_app.sql`**: Creates the restricted `app` role and `public` schema grants. Requires the migration runner to set `app.bootstrap_password` via `SELECT set_config('app.bootstrap_password', <password>, false)` with a bound parameter before executing this file.
 *   **`01_dml_hooks.sql`**: Contains the generic row-level trigger `audit.process_dml_hook()` responsible for timestamping, actor attribution, and moving before-images to the audit table.
 *   **`02_ddl_setup.sql`**: Exposes `audit.setup_tracking('schema', 'table')` to construct the `_audit` clone table, wire up the triggers, and apply the RLS policies.
 *   **`03_ddl_protection.sql`**: Provides cluster-level event triggers to protect audited tables against rogue `DROP COLUMN` commands.
 *   **`04_views.sql`**: Generates the unified `_history` timeline views.
+*   **`05_grant_app_audit.sql`**: Grants the `app` role `USAGE` on the `audit` schema (must run after `01` creates that schema).
+
+## Migration runner contract
+
+Migration runners (Alembic or otherwise) should:
+1. read the app-role password from service configuration,
+2. set `app.bootstrap_password` in-session via a bound parameter (`SELECT set_config('app.bootstrap_password', <password>, false)`),
+3. execute `00` through `05` in numeric order.
