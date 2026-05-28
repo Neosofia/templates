@@ -70,13 +70,29 @@ class Settings(BaseSettings):
             return [entry.strip() for entry in value.split(",") if entry.strip()]
         return [entry.strip() for entry in value if isinstance(entry, str) and entry.strip()]
 
-    @field_validator("port", "trusted_proxy_hops", mode="before")
+    @field_validator(
+        "port",
+        "trusted_proxy_hops",
+        "max_content_length",
+        "authorization_policy_cache_ttl",
+        "web_concurrency",
+        "gunicorn_threads",
+        "gunicorn_timeout",
+        "gunicorn_keepalive",
+        mode="before",
+    )
     @classmethod
-    def _normalize_optional_int_env(cls, value: object) -> object:
+    def _normalize_optional_int_env(cls, value: object, info) -> object:
+        env_var = info.field_name.upper()
         # Some platforms inject empty strings for optional numeric env vars.
         # Returning None lets pydantic apply the field default.
         if isinstance(value, str) and not value.strip():
             return None
+        if isinstance(value, str):
+            try:
+                return int(value)
+            except ValueError as exc:
+                raise ValueError(f"{env_var} must be an integer, got {value!r}") from exc
         return value
 
     @field_validator("app_database_url", "migration_database_url", mode="before")
