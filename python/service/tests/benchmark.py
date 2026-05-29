@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "../.env"))
 TOKEN = os.getenv("DEV_JWT_TOKEN", "").strip('"')
 
-URL = "http://localhost:8018/api/v1/documents/d1"
+URL = "http://localhost:8900/api/v1/documents/d1"
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",

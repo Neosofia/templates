@@ -49,9 +49,9 @@ uv run alembic upgrade head
 | `JWT_AUDIENCE` | string | `python-template` | Audience to expect on JWT.  |
 | `ENV` | string | `production` | Controls development/test behavior such as HTTPS enforcement. |
 | `LOG_LEVEL` | string | `info` | Minimum structured log severity. |
-| `PORT` | integer | `8018` | HTTP listener port. |
+| `PORT` | integer | `8900` | HTTP listener port (demo scaffold; outside 8000+spec range). |
 | `TRUSTED_PROXY_HOPS` | integer | `1` | Number of trusted reverse proxies for `ProxyFix`. |
-| `AUTHORIZATION_POLICIES_DIR` | path | `policies` | Directory containing Cedar policy files and schema. |
+| `AUTHORIZATION_POLICIES_DIR` | path | `policies` | Directory containing Cedar policy files (`*.cedar`). |
 | `AUTHORIZATION_POLICY_CACHE_TTL` | integer | `60` | Seconds to cache the loaded policy bundle in process. |
 | `MAX_CONTENT_LENGTH` | integer | `16384` | Maximum accepted request body size in bytes. |
 | `RATELIMIT_STORAGE_URI` | string | `memory://` | Rate-limit backend. Use Redis in multi-replica deployments. |
