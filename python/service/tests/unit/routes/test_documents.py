@@ -63,6 +63,18 @@ def test_admin_clinician_delete_is_allowed(client, rsa_keypair):
     assert response.get_json()["deleted"] == "d1"
 
 
+def test_operator_can_read_document(client, rsa_keypair):
+    response = _secure_request(
+        client,
+        rsa_keypair,
+        "GET",
+        "/api/v1/documents/d1",
+        claims={"sub": "019e02b4-47e1-778a-9331-476e9f927bd9", "neosofia:roles": ["operator"]},
+    )
+    assert response.status_code == 200
+    assert response.get_json()["document_id"] == "d1"
+
+
 def test_missing_valid_jwt_returns_401(client, rsa_keypair):
     response = _secure_request(client, rsa_keypair, "GET", "/api/v1/documents/d1")
     assert response.status_code == 401
