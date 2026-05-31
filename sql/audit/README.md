@@ -18,7 +18,8 @@ Audit rows are strictly immutable and structurally independent.
 The audit trail is guaranteed by the database engine, not the application logic. 
 - **Atomic Execution**: Triggers fire in the exact same transaction as the modifying statement (INSERT/UPDATE/DELETE). If the audit copy fails, the main transaction aborts.
 - **Timestamp Integrity**: The update trigger forcibly overwrites `changed_at` to `now()` on the target row regardless of what the application sets.
-- **Hard Deletes are Prohibited**: The delete trigger actively blocks `DELETE` statements (throwing an error), enforcing our soft-delete only standard (`change_type = 3`).
+- **Hard Deletes are Prohibited**: The delete trigger actively blocks `DELETE` statements (throwing an error), enforcing our soft-delete only standard (`change_type = 3`). Archive-on-delete uses a session flag (`audit.internal_delete`) so the trigger can remove the live row without treating it as a direct delete.
+- **Trigger privileges**: `audit.process_dml_hook()` runs as `SECURITY DEFINER` so the application role can archive rows into `_audit` without direct write access to audit tables.
 
 ### 4. Continuous History Views
 The generated `_history` views seamlessly union the primary table (the *current* state) with the `_audit` table (the *historical* states). They are ordered by the entity's primary key and the `changed_at` timestamp to present a single correct timeline of evolution.
@@ -32,9 +33,9 @@ To summarize the complete lifecycle of a record under this audit system:
 
 1. **Inserts**: An `INSERT` to the main table is intercepted by the trigger. The trigger automatically sets `change_type = 1` (Insert) and `changed_at = now()`. The application *must* provide `changed_by_uuid` and `changed_by_type` (1 for human, 2 for service), either in the payload or via Postgres session variables (`app.current_actor_uuid` / `app.current_actor_type`). If these attribution fields are missing, the database halts the transaction. No record is written to the `_audit` table during an insert because the main table holds the initial state.
 2. **Updates**: An `UPDATE` intercepts the old row *before* changes are applied, generates a `uuid_generate_v7()`, and inserts that before-image into the `_audit` history table. The trigger then modifies the incoming main table row: enforcing `changed_at = now()`, setting `change_type = 2` (Update), and refreshing the `changed_by_*` attribution fields.
-3. **Deletes (Soft Deletes)**: Hard `DELETE` SQL commands are strictly prohibited by the trigger (it throws an exception). Deletions must be performed as an `UPDATE` that sets `change_type = 3` (Delete). The trigger treats this like an update: the pre-delete state is copied to the `_audit` table, and the main table row is marked as deleted.
-4. **History View**: A unified `_history` view automatically `UNION ALL`s the `_audit` table and the main table. This gives auditors a complete timeline of a row—from initial creation, through all intermediate updates, ending with its current state (even if that state is a `change_type = 3` soft delete).
-5. **Row-Level Security (RLS)**: The main table implements RLS (`USING change_type != 3`). This transparently hides soft-deleted records from all standard application `SELECT` queries without requiring `WHERE` clauses in application code. An escape hatch (`audit.show_deleted = 'true'`) allows authorized auditor queries to bypass this filter when necessary.
+3. **Deletes (Soft Deletes)**: Hard `DELETE` SQL commands are strictly prohibited by the trigger (it throws an exception). Deletions must be performed as an `UPDATE` that sets `change_type = 3` (Delete). The trigger archives the last active state and a tombstone row into `_audit`, then removes the row from the main table. Live queries against the main table therefore see only active records.
+4. **History View**: A unified `_history` view automatically `UNION ALL`s the `_audit` table and the main table. This gives auditors a complete timeline of a row—from initial creation, through all intermediate updates, ending with its current live state or archived tombstone in `_audit`.
+5. **App access**: `audit.setup_tracking()` creates the `_history` view, grants the `app` role read-only access to `_audit` and `_history`, and leaves main-table DML to the application. Row-Level Security is not used.
 
 ## SQL Templates
 
@@ -42,10 +43,10 @@ Execute in numeric order during platform init migration (`000`).
 
 *   **`00_bootstrap_app.sql`**: Creates the restricted `app` role and `public` schema grants. Requires the migration runner to set `app.bootstrap_password` via `SELECT set_config('app.bootstrap_password', <password>, false)` with a bound parameter before executing this file.
 *   **`01_dml_hooks.sql`**: Contains the generic row-level trigger `audit.process_dml_hook()` responsible for timestamping, actor attribution, and moving before-images to the audit table.
-*   **`02_ddl_setup.sql`**: Exposes `audit.setup_tracking('schema', 'table')` to construct the `_audit` clone table, wire up the triggers, and apply the RLS policies.
+*   **`02_ddl_setup.sql`**: Exposes `audit.setup_tracking('schema', 'table')` to construct the `_audit` clone table, wire up the triggers, create the `_history` view, and grant read-only audit access to the `app` role.
 *   **`03_ddl_protection.sql`**: Provides cluster-level event triggers to protect audited tables against rogue `DROP COLUMN` commands.
 *   **`04_views.sql`**: Generates the unified `_history` timeline views.
-*   **`05_grant_app_audit.sql`**: Grants the `app` role `USAGE` on the `audit` schema (must run after `01` creates that schema).
+*   **`05_grant_app_audit.sql`**: Grants the `app` role `USAGE` on the `audit` schema and exposes `audit.grant_app_access()` (must run after `01` creates that schema).
 
 ## Migration runner contract
 

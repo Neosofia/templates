@@ -27,8 +27,6 @@ BEGIN
     );
 
     -- 3. Sync any columns present in the source table but missing from the audit table.
-    -- This handles the case where setup_tracking is called again after new columns are added.
-    -- All synced columns are nullable so existing audit rows are not invalidated.
     audit_table_id := (target_schema || '.' || target_table || '_audit')::regclass;
     FOR col IN
         SELECT a.attname                             AS column_name,
@@ -53,7 +51,7 @@ BEGIN
         );
     END LOOP;
 
-    -- 5. Wire up the triggers
+    -- 4. Wire up the triggers
     EXECUTE format(
         'DROP TRIGGER IF EXISTS trg_audit_dml ON %I.%I',
         target_schema, target_table
@@ -66,18 +64,13 @@ BEGIN
         target_schema, target_table
     );
 
-    -- 6. Enable Row-Level Security to hide soft-deleted rows by default.
-    -- The app role is a non-superuser so the policy applies automatically;
-    -- FORCE is not required.
-    -- Allows bypass if the application explicitly sets 'audit.show_deleted = true' in the transaction.
-    EXECUTE format('ALTER TABLE %I.%I ENABLE ROW LEVEL SECURITY', target_schema, target_table);
+    -- 5. Remove legacy v1 RLS; main tables hold live rows only.
     EXECUTE format('DROP POLICY IF EXISTS hide_soft_deleted ON %I.%I', target_schema, target_table);
-    EXECUTE format(
-        'CREATE POLICY hide_soft_deleted ON %I.%I 
-         FOR ALL 
-         USING (change_type != 3 OR current_setting(''audit.show_deleted'', true) = ''true'')', 
-        target_schema, target_table
-    );
+    EXECUTE format('ALTER TABLE %I.%I DISABLE ROW LEVEL SECURITY', target_schema, target_table);
+
+    -- 6. History view and read-only audit access for the app role
+    PERFORM audit.setup_views(target_schema, target_table);
+    PERFORM audit.grant_app_access(target_schema, target_table);
 
 END;
 $$ LANGUAGE plpgsql;

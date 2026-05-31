@@ -21,7 +21,7 @@
    uv run alembic upgrade head
    ```
 
-   Requires audit SQL from `templates/sql/audit` (monorepo) or `ghcr.io/neosofia/sql-template:v0.5.0+` in production images.
+   Requires audit SQL from `templates/sql/audit` (monorepo) or `ghcr.io/neosofia/sql-template:v0.6.0+` in production images.
 
 3. Run the test suite:
 
