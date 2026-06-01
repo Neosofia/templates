@@ -4,7 +4,7 @@ Cedar principal for REST-inferred ``@with_security`` routes.
 Document resources are built from ``src.models.document``; only the principal
 is service-specific. JWT → principal mapping uses the SDK helper (including
 ``neosofia:principal_type`` for demo Patient/Clinician tokens and
-``neosofia:roles`` for platform operators).
+``neosofia:actors`` for Tier-1 platform operators; ``neosofia:roles`` for Tier-2 org roles).
 """
 from __future__ import annotations
 

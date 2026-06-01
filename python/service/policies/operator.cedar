@@ -3,5 +3,5 @@ permit (
     action,
     resource
 ) when {
-    principal.roles.contains("operator")
+    principal.actors.contains("operator")
 };

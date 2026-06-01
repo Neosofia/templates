@@ -69,7 +69,7 @@ def test_operator_can_read_document(client, rsa_keypair):
         rsa_keypair,
         "GET",
         "/api/v1/documents/d1",
-        claims={"sub": "019e02b4-47e1-778a-9331-476e9f927bd9", "neosofia:roles": ["operator"]},
+        claims={"sub": "019e02b4-47e1-778a-9331-476e9f927bd9", "neosofia:actors": ["operator"]},
     )
     assert response.status_code == 200
     assert response.get_json()["document_id"] == "d1"
