@@ -39,7 +39,6 @@ class Settings(BaseSettings):
     jwt_public_key: str | None = Field(default=None)
     jwt_jwks_uri: str | None = Field(default=None)
     jwt_audience: str | list[str] = Field(default="python-template")
-
     # Rate limit settings
     rate_limit_storage_uri: str = "memory://"
     health_rate_limit: str = "600 per minute"

@@ -4,6 +4,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from authentication_in_the_middle.actors import configure_tier1_actor_classes
 from authorization_in_the_middle import CedarEvaluator, FilesystemPolicySetSource
 from src.bootstrap.config import settings
 from src.bootstrap.extensions import limiter, talisman
@@ -28,6 +29,8 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     app.config.setdefault("SERVICE_NAME", settings.service_name)
     if hasattr(settings, "jwt_jwks_uri"):
         app.config.setdefault("JWT_JWKS_URI", settings.jwt_jwks_uri)
+    app.config.setdefault("ENV", settings.env)
+    configure_tier1_actor_classes(app)
 
     is_dev = settings.env.lower() in ("development", "test")
     if not is_dev and settings.trusted_proxy_hops > 0:

@@ -23,7 +23,9 @@ _PUBLIC_PEM = _PUBLIC_KEY.public_bytes(
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
 
-os.environ["JWT_PUBLIC_KEY"] = base64.b64encode(_PUBLIC_PEM).decode('utf-8')
+os.environ["JWT_PUBLIC_KEY"] = base64.b64encode(_PUBLIC_PEM).decode("utf-8")
+os.environ.pop("JWT_JWKS_URI", None)
+os.environ["JWT_AUDIENCE"] = "python-template"
 os.environ["ENV"] = "test"
 os.environ["APP_DATABASE_URL"] = "postgresql+psycopg://app:dummy@localhost/dummy"
 os.environ["MIGRATION_DATABASE_URL"] = "postgresql+psycopg://template:dummy@localhost/dummy"
@@ -37,7 +39,15 @@ def rsa_keypair():
 
 @pytest.fixture
 def app():
-    application = create_app({"TESTING": True})
+    application = create_app(
+        {
+            "TESTING": True,
+            "TIER1_ACTOR_CLASSES": frozenset({"operator", "study", "clinician", "patient"}),
+            "JWT_JWKS_URI": None,
+            "JWT_PUBLIC_KEY": _PUBLIC_PEM.decode("utf-8"),
+            "JWT_AUDIENCE": "python-template",
+        }
+    )
     return application
 
 
