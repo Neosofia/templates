@@ -73,6 +73,11 @@ RUN_DOCKER_TESTS=1 uv run --dev -m pytest tests/integration -q
 
 The default pytest invocation enforces an 80% coverage floor and excludes integration tests from the fast unit/contract path.
 
+## Releases
+
+- [CHANGELOG.md](CHANGELOG.md) -- what changed for users of the service ([Keep a Changelog](https://keepachangelog.com/))
+- [INSTALLATION_PLAN.md](INSTALLATION_PLAN.md) -- Product Installation Plan for operators (deploy, verify, evidence)
+
 ## Container Build
 
 In this monorepo, build the reference container from the repository root so the local `authorization-in-the-middle` source override is available during `uv sync`:
