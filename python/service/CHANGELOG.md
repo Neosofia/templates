@@ -6,18 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Added
-
-- (Example) Operators can list and export documents for their tenant from the API.
+## [0.9.0] - 2026-06-10
 
 ### Changed
 
-- (Example) Error responses no longer include internal stack details.
-
-### Fixed
-
-- (Example) Rate limiting on delete no longer blocks read-only dashboards.
+- Document routes use bare `@with_security()` with `resource_loader` only — REST inference supplies Cedar actions; no `Capabilities` indirection.
+- Pinned **`authorization-in-the-middle/v0.4.23`** and **`logenvelope/v0.3.4`**.
 
 ### Removed
 
-- 
+- `src/bootstrap/capabilities.py` — action strings belong in Cedar policy or inline `action='Action::"…"'` when inference cannot apply.

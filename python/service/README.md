@@ -17,11 +17,13 @@ uv run --dev -m pytest -q
 python -m gunicorn -c gunicorn_conf.py main:app
 ```
 
-## Source Override
+## SDK pins
 
-This template currently resolves `authorization-in-the-middle` from the local monorepo checkout via `[tool.uv.sources]` in `pyproject.toml`.
+`pyproject.toml` resolves `authentication-in-the-middle`, `authorization-in-the-middle`, and `logenvelope` from immutable published wheels via `[tool.uv.sources]`. When you copy this template into a new service repo, keep that pattern — bump pins to the latest SDK tags your platform release uses; do not vendor SDK source.
 
-When you copy this template into a standalone repository, replace that local source override with an immutable published wheel URL before enabling container builds or CI.
+## Route authorization
+
+Document routes demonstrate the platform pattern: `@with_security()` with `resource_loader` when REST inference matches your Cedar vocabulary; pass `action='Action::"…"'` only when inference cannot apply. See `src/routes/documents.py` and `src/authorization/entities.py`.
 
 ## Endpoints
 
@@ -80,8 +82,8 @@ The default pytest invocation enforces an 80% coverage floor and excludes integr
 
 ## Container Build
 
-In this monorepo, build the reference container from the repository root so the local `authorization-in-the-middle` source override is available during `uv sync`:
+Build from the service directory (published SDK wheels are resolved during `uv sync`):
 
 ```bash
-docker build -f templates/python/service/Dockerfile -t python-template:test .
+docker build --target runtime -t python-template:test .
 ```
