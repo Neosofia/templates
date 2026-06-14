@@ -4,7 +4,11 @@ What changed for people who use or depend on this service (operators, integrator
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.10.0] - 2026-06-14
+
+### Changed
+
+- Pinned **`authorization-in-the-middle/v0.7.1`**; principals via shared `resolve_jwt_principal`.
 
 ## [0.9.0] - 2026-06-10
 

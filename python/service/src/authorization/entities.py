@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from authorization_in_the_middle import extract_jwt_principal_entity
+from authorization_in_the_middle.flask_identity import resolve_jwt_principal
 
 NAMESPACE = "demo"
 
 
 def resolve_principal() -> dict[str, Any]:
-    return extract_jwt_principal_entity(NAMESPACE, default_type="User")
+    return resolve_jwt_principal(NAMESPACE, default_type="User")
