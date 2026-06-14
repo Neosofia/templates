@@ -4,6 +4,16 @@ What changed for people who use or depend on this service (operators, integrator
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.10.1] - 2026-06-14
+
+### Fixed
+
+- Demo clinician Cedar principal forwards ``neosofia:role`` and ``neosofia:clinic_id`` via ``extra_attrs`` so clinic-scoped read/delete policies evaluate correctly.
+
+### Changed
+
+- Pinned **`authorization-in-the-middle/v0.7.2`** (``/summary`` member subresource inference).
+
 ## [0.10.0] - 2026-06-14
 
 ### Changed

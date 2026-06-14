@@ -10,10 +10,25 @@ from __future__ import annotations
 
 from typing import Any
 
-from authorization_in_the_middle.flask_identity import resolve_jwt_principal
+from flask import g
+
+from authorization_in_the_middle.flask_identity import jwt_claim_principal_attributes, resolve_jwt_principal
 
 NAMESPACE = "demo"
 
+_DEMO_CLINICIAN_ATTRS = ("role", "clinic_id")
+
 
 def resolve_principal() -> dict[str, Any]:
-    return resolve_jwt_principal(NAMESPACE, default_type="User")
+    claims = getattr(g, "jwt_claims", None) or {}
+    _, _, jwt_attrs = jwt_claim_principal_attributes(claims, default_type="User")
+    extra_attrs = {
+        attr: jwt_attrs[attr]
+        for attr in _DEMO_CLINICIAN_ATTRS
+        if attr in jwt_attrs
+    }
+    return resolve_jwt_principal(
+        NAMESPACE,
+        default_type="User",
+        extra_attrs=extra_attrs or None,
+    )
