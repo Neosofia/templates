@@ -27,6 +27,7 @@
 
    ```bash
    uv run --dev -m pytest -q
+   RUN_DOCKER_TESTS=1 uv run --dev -m pytest tests/integration/test_container.py -q
    ```
 
 4. Start the service locally:
@@ -81,13 +82,6 @@ For Railway IaC, start from `railway.toml` in this template directory. It provis
 - **Cloud audience:** `JWT_AUDIENCE=python-template`; configure your token issuer to include this audience.
 - **Healthcheck:** forked services should exempt `/health` from Talisman HTTPS redirect (see infrastructure guide).
 - **CORS preflight cache:** OPTIONS responses include `Access-Control-Max-Age: 86400` (24 h; Chrome caps at 2 h) so browsers cache cross-origin preflights.
-
-## Test Matrix
-
-- `tests/unit/` tests pure business logic, helpers, and pure functions without I/O or routing.
-- `tests/integration/` exercises the Flask routing, schema validation, and real un-mocked requests. Validates OpenAPI contract and response shapes.
-- `tests/integration/test_container.py` runs a real Docker container using `testcontainers` to ensure the built image responds successfully to health queries.
-- `tests/benchmark.py` stress tests concurrency, AuthN bottlenecks, and rate limiting natively.
 
 ## High-Throughput Benchmarking
 

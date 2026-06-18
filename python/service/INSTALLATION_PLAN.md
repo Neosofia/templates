@@ -2,6 +2,27 @@
 
 Per-version instructions for system administrators: prerequisites, deploy and configuration steps, post-deploy verification, and evidence to capture. For what changed in each release, see [CHANGELOG.md](CHANGELOG.md).
 
+## python-template v0.10.2
+
+**Build identifiers:** **python-template v0.10.2**; SDK **`authorization-in-the-middle/v0.7.6`**.
+
+**Prerequisites:**
+
+- None beyond the prior release.
+
+**Deploy:**
+
+1. Pull `ghcr.io/neosofia/python-template:v0.10.2` (tag `python-template/v0.10.2`).
+2. Deploy with existing env unchanged.
+
+**Post-deploy verification:**
+
+1. `GET /health` returns `"status": "ok"` and `"version": "0.10.2"`.
+
+**Evidence:** Health JSON.
+
+---
+
 ## python-template v0.10.1
 
 **Build identifiers:** **python-template v0.10.1**; SDK **`authorization-in-the-middle/v0.7.2`**.
