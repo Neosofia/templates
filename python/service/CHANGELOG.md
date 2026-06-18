@@ -4,6 +4,12 @@ What changed for people who use or depend on this service (operators, integrator
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.10.3] - 2026-06-18
+
+### Fixed
+
+- Trivy lockfile scan: pin **`cryptography>=48.0.1`** and **`pyjwt>=2.13.0`** (dev group).
+
 ## [0.10.2] - 2026-06-18
 
 ### Fixed
